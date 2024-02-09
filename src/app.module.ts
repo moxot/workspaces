@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
 import { WorkspacesModule } from './modules/workspaces/workspaces.module';
 import { MessagesModule } from './modules/messages/messages.module';
+import { RedisModule } from './modules/redis/redis.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -17,6 +18,7 @@ dotenv.config();
     UsersModule,
     WorkspacesModule,
     MessagesModule,
+    RedisModule,
   ],
   controllers: [AppController],
   providers: [AppService],

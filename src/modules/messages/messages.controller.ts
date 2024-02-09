@@ -1,20 +1,32 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } from '@nestjs/common';
 import { MessagesService } from './messages.service';
-import { CreateMessageDto } from './dto/create-message.dto';
+import { CreateMessageDto, CreateMessageDtoResult } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
+import { GetMessagesFilterDto } from './dto/get-messages-filter.dto';
+import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { TextSearchDtoResult } from './dto/text-search.dto';
 
+@ApiTags('Messages')
 @Controller('messages')
 export class MessagesController {
   constructor(private readonly messagesService: MessagesService) {}
 
+  @HttpCode(201)
   @Post()
   async create(@Body() createMessageDto: CreateMessageDto) {
     return this.messagesService.create(createMessageDto);
   }
 
+  @ApiOkResponse({ type: [CreateMessageDtoResult] })
   @Get()
-  async findAll() {
-    return this.messagesService.findAll();
+  async findAll(@Query() filter: GetMessagesFilterDto): Promise<CreateMessageDtoResult> {
+    return this.messagesService.findAll(filter);
+  }
+
+  @ApiOkResponse({ type: TextSearchDtoResult })
+  @Get('text-search')
+  async textSearch(@Query('text') text: string) {
+    return this.messagesService.textSearch(text);
   }
 
   @Get(':id')

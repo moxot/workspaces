@@ -10,11 +10,11 @@ export class Message {
   @Prop({ required: true, default: 0 })
   likes: number;
 
-  @Prop({ required: true })
+  @Prop({ required: true, index: 'text' })
   content: string;
 
   @Prop({ type: MongooseSchema.Types.ObjectId, ref: 'Workspace' })
-  workspaceId: Workspace;
+  workspace: Workspace;
 }
 
 export const MessageSchema = SchemaFactory.createForClass(Message);

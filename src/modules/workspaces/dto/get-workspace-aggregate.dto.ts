@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 import { IsMongoId } from 'class-validator';
 import { Exclude, Expose, Type } from 'class-transformer';
 import { TransformMongoId } from '../../../common/decorators/transform-mongo-id';
@@ -7,19 +7,23 @@ import { GetMessageAggregateDto } from '../../messages/dto/get-message-aggregate
 @Exclude()
 export class GetWorkspaceAggregateDto {
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
   @IsMongoId()
   @TransformMongoId()
   _id: string;
 
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
   @IsMongoId()
   @TransformMongoId()
-  userId: string;
+  user: string;
 
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
+  name: string;
+
+  @Expose()
+  @ApiResponseProperty()
   @Type(() => GetMessageAggregateDto)
   messages: GetMessageAggregateDto[];
 }

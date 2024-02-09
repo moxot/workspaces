@@ -10,7 +10,7 @@ import { ObjectId } from 'mongodb';
 export class WorkspacesService {
   constructor(@InjectModel(Workspace.name) private workspaceModel: Model<Workspace>) {}
   async create(createWorkspaceDto: CreateWorkspaceDto) {
-    await this.workspaceModel.create(createWorkspaceDto);
+    await this.workspaceModel.create({ ...createWorkspaceDto, user: createWorkspaceDto.userId });
   }
 
   async findAll() {

@@ -1,27 +1,10 @@
-import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 import { IsString, IsMongoId, IsDate, IsNumber } from 'class-validator';
 import { TransformMongoId } from '../../../common/decorators/transform-mongo-id';
 import { Exclude, Expose, Type } from 'class-transformer';
-import { Workspace } from '../../workspaces/workspace.schema';
-
-export class CreateMessageDto {
-  @ApiProperty()
-  @IsMongoId()
-  @TransformMongoId()
-  workspace: string;
-
-  @ApiProperty()
-  @IsDate()
-  @Type(() => Date)
-  date: Date;
-
-  @ApiProperty()
-  @IsString()
-  content: string;
-}
 
 @Exclude()
-export class CreateMessageDtoResult {
+export class TextSearchDtoResult {
   @Expose()
   @ApiResponseProperty()
   @IsMongoId()
@@ -46,6 +29,7 @@ export class CreateMessageDtoResult {
 
   @Expose()
   @ApiResponseProperty()
-  @Type(() => Workspace)
-  workspace: Workspace;
+  @IsMongoId()
+  @TransformMongoId()
+  workspace: string;
 }

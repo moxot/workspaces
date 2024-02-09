@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
 import { IsDate, IsMongoId, IsNumber, IsString } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
 import { TransformMongoId } from '../../../common/decorators/transform-mongo-id';
@@ -6,23 +6,23 @@ import { TransformMongoId } from '../../../common/decorators/transform-mongo-id'
 @Exclude()
 export class GetMessageAggregateDto {
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
   @IsMongoId()
   @TransformMongoId()
   _id: string;
 
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
   @IsNumber()
   likes: number;
 
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
   @IsString()
   content: string;
 
   @Expose()
-  @ApiProperty()
+  @ApiResponseProperty()
   @IsDate()
   date: Date;
 }
