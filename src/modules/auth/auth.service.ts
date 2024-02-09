@@ -32,7 +32,11 @@ export class AuthService {
       { userId: userId },
       { expiresIn: process.env.REFRESH_TOKEN_TTL },
     );
-    await this.redisService.set(`refresh_${refreshToken}`, userId, +process.env.REFRESH_TOKEN_TTL);
+    await this.redisService.set(
+      `refresh_${refreshToken}`,
+      userId,
+      +process.env.REFRESH_TOKEN_TTL_SECONDS,
+    );
     return { token, refreshToken };
   }
 
@@ -49,7 +53,7 @@ export class AuthService {
     await this.redisService.set(
       `refresh_${newRefreshToken}`,
       userId,
-      +process.env.REFRESH_TOKEN_TTL,
+      +process.env.REFRESH_TOKEN_TTL_SECONDS,
     );
     return plainToInstance(UserRefreshTokenDtoResult, { token: newRefreshToken });
   }

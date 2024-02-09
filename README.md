@@ -6,6 +6,7 @@ REST API Server. Didn't flesh it out due to time constraints, focusing on the im
 - Basic auth handling
 - Structural concessions
 - No custom logger
+- Not optimal error handling
 
 ## Requirements
 - Node.js 20.x
