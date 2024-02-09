@@ -3,6 +3,8 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './modules/users/users.module';
+import { WorkspacesModule } from './modules/workspaces/workspaces.module';
+import { MessagesModule } from './modules/messages/messages.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -13,6 +15,8 @@ dotenv.config();
       dbName: process.env.MONGODB_DB,
     }),
     UsersModule,
+    WorkspacesModule,
+    MessagesModule,
   ],
   controllers: [AppController],
   providers: [AppService],

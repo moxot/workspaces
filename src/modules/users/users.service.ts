@@ -2,16 +2,19 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './user.schema';
+import { GetUserAggregateDto } from './dto/get-user-aggregate.dto';
+import { plainToInstance } from 'class-transformer';
+import { ObjectId } from 'mongodb';
 
 @Injectable()
 export class UsersService {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
-  async findOne(userId: string): Promise<User | undefined> {
+  async findOne(userId: string): Promise<GetUserAggregateDto | undefined> {
     const userRsult = await this.userModel.aggregate([
       {
         $match: {
-          _id: userId,
+          _id: new ObjectId(userId),
         },
       },
       {
@@ -43,6 +46,6 @@ export class UsersService {
         },
       },
     ]);
-    return userRsult[0];
+    return plainToInstance(GetUserAggregateDto, userRsult[0]);
   }
 }
