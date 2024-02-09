@@ -1,4 +1,4 @@
-import { ApiProperty, ApiResponseProperty } from '@nestjs/swagger';
+import { ApiResponseProperty } from '@nestjs/swagger';
 import { IsDate, IsMongoId, IsNumber, IsString } from 'class-validator';
 import { Exclude, Expose } from 'class-transformer';
 import { TransformMongoId } from '../../../common/decorators/transform-mongo-id';

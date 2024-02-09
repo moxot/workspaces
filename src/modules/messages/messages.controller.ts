@@ -1,11 +1,24 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+  HttpCode,
+  UseGuards,
+} from '@nestjs/common';
 import { MessagesService } from './messages.service';
 import { CreateMessageDto, CreateMessageDtoResult } from './dto/create-message.dto';
 import { UpdateMessageDto } from './dto/update-message.dto';
 import { GetMessagesFilterDto } from './dto/get-messages-filter.dto';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { TextSearchDtoResult } from './dto/text-search.dto';
+import { AuthGuard } from '../auth/auth.guard';
 
+@UseGuards(AuthGuard)
 @ApiTags('Messages')
 @Controller('messages')
 export class MessagesController {

@@ -1,23 +1,16 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
-import { JwtService } from '@nestjs/jwt';
 import { User } from './user.schema';
 import { plainToInstance } from 'class-transformer';
 import { ObjectId } from 'mongodb';
 import { GetUserAggregateDtoResult, GetUserDtoResult } from './dto/get-user.dto';
 import * as argon2 from 'argon2';
 import { CreateUserDto } from './dto/create-user.dto';
-import { RedisService } from '../redis/redis.service';
-import { UserRefreshTokenDtoResult } from './dto/user-refresh-token.dto';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectModel(User.name) private userModel: Model<User>,
-    private readonly jwtService: JwtService,
-    private readonly redisService: RedisService,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async create(createUserDto: CreateUserDto) {
     const password = await argon2.hash(createUserDto.password);
@@ -25,48 +18,8 @@ export class UsersService {
     await user.save();
   }
 
-  async login(login: string, password: string) {
-    const user = await this.userModel.findOne({ login }).lean();
-    if (!user) {
-      throw new UnauthorizedException('Incorrect username or password');
-    }
-
-    if (!(await argon2.verify(user.password, password))) {
-      throw new UnauthorizedException('Incorrect username or password');
-    }
-    const userId = String(user._id);
-    const token = this.jwtService.sign(
-      { userId: userId },
-      { expiresIn: process.env.ACCESS_TOKEN_TTL },
-    );
-    const refreshToken = this.jwtService.sign(
-      { userId: userId },
-      { expiresIn: process.env.REFRESH_TOKEN_TTL },
-    );
-    await this.redisService.set(`refresh_${refreshToken}`, userId, +process.env.REFRESH_TOKEN_TTL);
-    return { token, refreshToken };
-  }
-
-  async refreshToken(refreshToken: string) {
-    const userId = await this.redisService.get(`refresh_${refreshToken}`);
-    if (!userId) {
-      throw new UnauthorizedException('Invalid refresh token');
-    }
-    await this.redisService.del(`refresh_${refreshToken}`);
-    const newRefreshToken = await this.jwtService.sign(
-      { userId: userId },
-      { expiresIn: +process.env.ACCESS_TOKEN_TTL },
-    );
-    await this.redisService.set(
-      `refresh_${newRefreshToken}`,
-      userId,
-      +process.env.REFRESH_TOKEN_TTL,
-    );
-    return plainToInstance(UserRefreshTokenDtoResult, { token: newRefreshToken });
-  }
-
-  async logout(refreshToken: string) {
-    await this.redisService.del(`refresh_${refreshToken}`);
+  async find(query: any) {
+    return this.userModel.findOne(query).lean();
   }
 
   async findOne(

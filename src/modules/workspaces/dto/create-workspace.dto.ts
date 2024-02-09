@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsString, IsMongoId } from 'class-validator';
-import { TransformMongoId } from '../../../common/decorators/transform-mongo-id';
 import { Type } from 'class-transformer';
 import { ObjectId } from 'mongodb';
 

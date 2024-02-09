@@ -1,6 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsMongoId, IsDate, IsOptional } from 'class-validator';
-import { TransformMongoId } from '../../../common/decorators/transform-mongo-id';
+import { IsString, IsDate, IsOptional } from 'class-validator';
 import { Type } from 'class-transformer';
 
 export class GetMessagesFilterDto {

@@ -6,6 +6,7 @@ import { UsersModule } from './modules/users/users.module';
 import { WorkspacesModule } from './modules/workspaces/workspaces.module';
 import { MessagesModule } from './modules/messages/messages.module';
 import { RedisModule } from './modules/redis/redis.module';
+import { AuthModule } from './modules/auth/auth.module';
 import * as dotenv from 'dotenv';
 dotenv.config();
 @Module({
@@ -19,6 +20,7 @@ dotenv.config();
     WorkspacesModule,
     MessagesModule,
     RedisModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],

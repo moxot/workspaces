@@ -4,7 +4,6 @@ import { UsersService } from './users.service';
 import { User, UserSchema } from './user.schema';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtModule } from '@nestjs/jwt';
-import { RedisModule } from '../redis/redis.module';
 
 @Module({
   imports: [
@@ -14,9 +13,9 @@ import { RedisModule } from '../redis/redis.module';
         secret: process.env.JWT_SECRET,
       }),
     }),
-    RedisModule,
   ],
   controllers: [UsersController],
   providers: [UsersService],
+  exports: [UsersService],
 })
 export class UsersModule {}
