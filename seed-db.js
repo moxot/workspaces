@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const argon2 = require('argon2');
 const { Schema } = mongoose;
 
 const userSchema = new Schema(
@@ -36,7 +37,7 @@ async function seedDatabase() {
   try {
     mongoose.connect('mongodb://user:password@localhost:27017/workspaces?authSource=admin');
     // Create a User
-    const user = await User.create({ name: 'John Doe', login: 'john', password: 'secret' });
+    const user = await User.create({ name: 'John Doe', login: 'john', password: await argon2.hash('secret') });
 
     // Create a few Workspaces for the User
     const workspaceNames = ['Workspace 1', 'Workspace 2'];

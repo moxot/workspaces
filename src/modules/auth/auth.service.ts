@@ -14,12 +14,6 @@ export class AuthService {
     private redisService: RedisService,
   ) {}
 
-  async verifyToken(token: string) {
-    return await this.jwtService.verifyAsync(token, {
-      secret: process.env.JWT_SECRET,
-    });
-  }
-
   async login(login: string, password: string) {
     const user = await this.usersService.find({ login });
     if (!user) {
