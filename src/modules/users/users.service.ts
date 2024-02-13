@@ -38,23 +38,23 @@ export class UsersService {
       },
       {
         $lookup: {
-          from: 'workspaces', // Ensure this is the correct collection name
+          from: 'workspaces',
           localField: '_id',
-          foreignField: 'user', // Adjusted to match your schema
+          foreignField: 'user',
           as: 'workspaces',
         },
       },
       {
         $unwind: {
           path: '$workspaces',
-          preserveNullAndEmptyArrays: true, // Optional, based on your data structure
+          preserveNullAndEmptyArrays: true,
         },
       },
       {
         $lookup: {
-          from: 'messages', // Ensure this is the correct collection name
+          from: 'messages',
           localField: 'workspaces._id',
-          foreignField: 'workspace', // This should match the reference field in Message schema
+          foreignField: 'workspace',
           as: 'workspaces.messages',
         },
       },
@@ -64,7 +64,7 @@ export class UsersService {
           name: { $first: '$name' },
           login: { $first: '$login' },
           password: { $first: '$password' },
-          workspaces: { $push: '$workspaces' }, // Reconstruct the workspaces array
+          workspaces: { $push: '$workspaces' },
         },
       },
     ]);
